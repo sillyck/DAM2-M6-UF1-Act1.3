@@ -6,11 +6,7 @@ import java.util.Scanner;
 public class Exercici3 {
 
 	public static void main(String[] args) throws IOException {
-		
-		int id = 0,posicio=0;
-		double salari2=0;
-		char cognomChar[]= new char[10], aux;
-		
+				
 		File fitxer = new File("Departaments.dat");
 		
 		RandomAccessFile fileRW = new RandomAccessFile(fitxer, "rw");
@@ -19,30 +15,32 @@ public class Exercici3 {
 		
 		double salari[] = {1500.00, 1300.00, 2100.00, 2500.00};
 		
+		int id = 0,posicio=0, opcio=0;
+		double salari2=0;
+		char cognomChar[]= new char[10], aux;
+		
 		Scanner entrada = new Scanner(System.in);
-		int n=cognom.length;
 		
 		StringBuffer buffer = null;
-
-		int cont=0;
+		int n = cognom.length;
 		
-		for(cont=0;cont<n;cont++) {
-			fileRW.writeInt(cont+1);
-			buffer = new StringBuffer (cognom[cont]);
+		for(int i=0; i<n; i++) {
+			fileRW.writeInt(i+1);
+			buffer = new StringBuffer(cognom[i]);
 			buffer.setLength(10);
 			fileRW.writeChars(buffer.toString());
-			fileRW.writeDouble(salari[cont]);
+			fileRW.writeDouble(salari[i]);
 		}
 		
-		int opcio = 0;
-		while(opcio!=3) {
-			System.out.println("1. Veure treballadors");
+		int opcion = 0;
+		while(opcion!=3) {
+			System.out.println("###########\n1. Veure treballadors");
 			System.out.println("2. Canviar salari treballador");
 			System.out.println("3. Sortir");
 			System.out.println("Escriu una opcio");
-			opcio = entrada.nextInt();
+			opcion = entrada.nextInt();
 			
-			switch (opcio) {
+			switch (opcion) {
 				
 				case 1:					
 					
@@ -70,11 +68,29 @@ public class Exercici3 {
 					break;
 			
 			case 2:
-					System.out.println("22222222222222222");
-					break;
+				int findID, nouSalari;
+				System.out.println("Indica el ID: ");
+				
+				findID = entrada.nextInt();
+				posicio = (findID - 1)* 32;
+				
+				if(posicio >= fileRW.length()) {
+					System.out.println("Aquest id no existeix");
+				}else {
+					System.out.println("Escriu el nou salari: ");
+					
+					int canviarSalari = entrada.nextInt();
+					
+					fileRW.seek(posicio+4+20);
+					nouSalari = fileRW.readInt();
+					nouSalari = nouSalari + canviarSalari;
+					fileRW.writeDouble(nouSalari);
+					System.out.println("S'ha canviat el salari del treballador");
+				}
+				break;
 					
 				case 3:
-					opcio=3;
+					opcion=3;
 					break;
 				
 			}
