@@ -10,8 +10,7 @@ public class Exercici2 {
 
 	public static void main(String[] args) throws IOException {
 		
-		String nombre, localidad;
-		int num;
+		
 		
 		File fitxer = new File("Departaments.dat");
 		
@@ -20,28 +19,33 @@ public class Exercici2 {
 		DataOutputStream dataOS = new DataOutputStream(fileout);
 		DataInputStream dataIS = new DataInputStream(filein);
 		
+		int id[] = {1,2,3,4,5};
 		
 		String nom[] = {"I+D", "RRHH", "Marqueting", "Comptabilitat", "Logisitca"};
 		
 		String localitat[] = {"Alcover", "Valls", "Tarragona", "Puigpelat", "Reus"};
 		
 		for(int i=0; i<nom.length; i++) {
-			dataOS.writeInt(i);
+			dataOS.writeInt(id[i]);
 			dataOS.writeUTF(nom[i]);
 			dataOS.writeUTF(localitat[i]);
 		}
 		
+		String nombre, localidad;
+		int num;
+		
 		try {
 			for(int i=0; i<nom.length; i++) {
+				num = dataIS.readInt();
 				nombre = dataIS.readUTF();
 				localidad = dataIS.readUTF();
-				num = dataIS.readInt();
 				
 				System.out.println("Numero: " + num + ", Nom: " + nombre + ", Locaitat: " + localidad + ".");
 			}
 		}catch (EOFException eo) {}
 		
 		dataIS.close();
+		dataOS.close();
 	}
 
 }
